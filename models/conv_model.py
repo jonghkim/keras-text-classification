@@ -154,7 +154,7 @@ class ConvModel():
 
     def predict_sequences(self, batch_input_sequences):
 
-        predicted_classes = self.model.predict_classes(batch_input_sequences, batch_size=self.config.PREDICTION_BATCH_SIZE, verbose=1)
+        predicted_classes = self.model.predict(batch_input_sequences, batch_size=self.config.PREDICTION_BATCH_SIZE, verbose=1)
 
         return predicted_classes
 
@@ -173,7 +173,7 @@ class ConvModel():
             for j in range(batch_size):
                 print('-')
                 print('*** Input:', input_texts[i+j], ' ***')
-                print('   Predicted Class:', ' '.join(predicted_classes[j]))
+                print('   Predicted Class:', ' '.join(np.argmax(predicted_classes[j],axis=1)))
                 print('Actual Class:', classes[i+j])
 
             ans = input("Continue? [Y/n]")
