@@ -45,7 +45,7 @@ class ConvModel():
         self.idx2word_eng = {v:k for k, v in self.word2idx_inputs.items()}
         
         self.classes = classes
-        
+
         self.steps_per_epoch = int(len(self.input_sequences)/self.config.BATCH_SIZE)
 
         print('---- Set Data Finished ----')
@@ -130,6 +130,9 @@ class ConvModel():
         self.model = model
 
     def train_model(self):
+        early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
+        callbacks_list = [early_stopping]
+
         r = self.model.fit_generator(generator=self.batch_generator(),
                     epochs=self.config.EPOCHS,
                     steps_per_epoch=self.steps_per_epoch,
