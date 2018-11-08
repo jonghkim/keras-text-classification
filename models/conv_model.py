@@ -106,7 +106,7 @@ class ConvModel():
         filter_sizes = [3,4,5]
         for filter_size in filter_sizes:
             conv_layer = Conv1D(filters=128, kernel_size=filter_size, activation='relu')(x)
-            bn_layer = BatchNormalization(conv_layer)
+            bn_layer = BatchNormalization()(conv_layer)
             pooling_layer = MaxPooling1D(pool_size=3)(bn_layer)
             convs.append(pooling_layer)
 
