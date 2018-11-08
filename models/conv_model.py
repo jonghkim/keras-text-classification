@@ -173,7 +173,8 @@ class ConvModel():
             for j in range(batch_size):
                 print('-')
                 print('*** Input:', input_texts[i+j], ' ***')
-                print('   Predicted Class:', ' '.join(predicted_classes[j]))
+                #print('   Predicted Class:', ' '.join(predicted_classes[j]))
+                print('   Predicted Class:', ' '.join(str(predicted_classes[j])))
                 print('Actual Class:', classes[i+j])
 
             ans = input("Continue? [Y/n]")
