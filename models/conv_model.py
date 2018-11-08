@@ -133,7 +133,7 @@ class ConvModel():
         #early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
         #callbacks_list = [early_stopping]
         callbacks_list = []
-        
+
         r = self.model.fit_generator(generator=self.batch_generator(),
                     epochs=self.config.EPOCHS,
                     steps_per_epoch=self.steps_per_epoch,
@@ -142,13 +142,42 @@ class ConvModel():
                     workers=1,
                     callbacks=callbacks_list)
         print('---- Train Model Finished ----')        
-        pass
 
-    def save_model(self):
+    def save_model(self, SAVE_PATH):
         self.model.save(SAVE_PATH)
+        print('---- Save Model Finished ----')        
 
-    def predict_build_model(self):
-        pass
+    def predict_build_model(self, LOAD_PATH):
+        self.model = load_model(LOAD_PATH)
 
-    def predict(self, input_texts, target_texts):
-        pass
+        print('---- Load Model Finished ----')        
+
+    def predict_sequences(self, batch_input_sequences):
+
+        predicted_classes = self.model.predict(batch_input_sequences, batch_size=self.config.PREDICTION_BATCH_SIZE, verbose=1)
+
+        return predicted_classes
+
+    def predict_sample(self, input_texts, classes):
+        # map indexes back into real words
+        # so we can view the results
+        while True:
+            # Do some test translations
+            i = np.random.choice(len(input_texts)-self.config.PREDICT_SAMPLE_SIZE+1)
+            
+            batch_size = len(self.input_sequences[i:i+self.config.PREDICT_SAMPLE_SIZE])
+            batch_input_sequences = self.batch_get_input(i, batch_size)
+
+            predicted_classes = self.predict_sequences(batch_input_sequences)
+
+            for j in range(batch_size):
+                print('-')
+                print('*** Input:', input_texts[i+j], ' ***')
+
+                if self.config.STYLE_TRANSFER == False:
+                    print('   Predicted Class:', ' '.join(predicted_classes[j]))
+                    print('Actual Class:', classes[i+j])
+
+            ans = input("Continue? [Y/n]")
+            if ans and ans.lower().startswith('n'):
+                break
