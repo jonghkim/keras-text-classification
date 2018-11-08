@@ -47,7 +47,8 @@ if __name__ == "__main__":
         predicted_classes = model.predict(input_texts, classes)
         predicted_classes = [list(predicted_class) for predicted_class in predicted_classes]
         predicted_list = [list(line) for line in zip(input_texts, classes, predicted_classes)]
-        predicted_list = [line[0], line[1], line[2][0], line[2][1] for line in predicted_list]
+        predicted_list = [[line[0], line[1], line[2][0], line[2][1]] for line in predicted_list]
+        
         class_colnames = ["class"+str(i) for i in range(config.CLASS_NUM)]
         colnames = ["sentence", "actual class"]+class_colnames
 
