@@ -154,7 +154,7 @@ class ConvModel():
 
     def predict_sequences(self, batch_input_sequences):
 
-        predicted_classes = self.model.predict(batch_input_sequences, batch_size=self.config.PREDICTION_BATCH_SIZE, verbose=1)
+        predicted_classes = self.model.predict_classes(batch_input_sequences, batch_size=self.config.PREDICTION_BATCH_SIZE, verbose=1)
 
         return predicted_classes
 
