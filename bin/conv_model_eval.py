@@ -47,6 +47,10 @@ if __name__ == "__main__":
         predicted_classes = model.predict(input_texts, classes)
         predicted_list = [list(line) for line in zip(input_texts, classes, predicted_classes)]
         class_colnames = ["class"+str(i) for i in range(config.CLASS_NUM)]
-        predicted_df = pd.DataFrame(predicted_list, columns = ["sentence", "actual class"]+ class_colnames)
+        colnames = ["sentence", "actual class"]+class_colnames
+        print(colnames)
+        print(predicted_list[0])
+        predicted_df = pd.DataFrame(predicted_list)
+
         predicted_df.to_csv(SAVE_RESULT_PATH, encoding='utf-8')
 

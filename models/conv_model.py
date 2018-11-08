@@ -174,7 +174,7 @@ class ConvModel():
                 print('-')
                 print('*** Input:', input_texts[i+j], ' ***')
                 print('   Predicted Class:', ' '.join(str(np.argmax(predicted_classes[j],axis=0))))
-                print('Actual Class:', classes[i+j])
+                print('   Actual Class:', classes[i+j])
 
             ans = input("Continue? [Y/n]")
             if ans and ans.lower().startswith('n'):
