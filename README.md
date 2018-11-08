@@ -1,4 +1,4 @@
-"# keras-text-classification" 
+# keras-text-classification
 
 *Work-in-Progress*
 
@@ -17,13 +17,22 @@ The purpose of this project is to explore different text classification models b
 ## Usage
 ~~~
 # For Convolutional Neural Networks for Sentence Classification: Solve Sentiment Classification Problem
+# Slightly different from Yoon Kim model, batch normalization and multi class classification is supported
 python -m bin.conv_model_train
-python -m bin.conv_model_test
+python -m bin.conv_model_eval
 ~~~
 
-### Code References
-- [Convolutional Neural Networks for Sentence Classification](https://github.com/yoonkim/CNN_sentence)
-- [CNN: Implementation of Yoon Kim's model](https://www.kaggle.com/danielsafai/cnn-implementation-of-yoon-kim-s-model)
-
-### Paper References
+## Paper References
 - [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) (EMNLP 2014)
+
+## For Citation
+```
+@misc{jonghkim,
+  author = {Jongho Kim},
+  title = {keras-text-classification},
+  year = {2018},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/jonghkim/keras-text-classification}},
+}
+```
