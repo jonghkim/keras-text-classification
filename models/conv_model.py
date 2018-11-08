@@ -191,7 +191,7 @@ class ConvModel():
                 print("Progrees: ", i," / ", len(input_texts))
                 step = step+0.05
 
-            batch_size = len(self.encoder_inputs[i:i+self.config.PREDICTION_BATCH_SIZE])
+            batch_size = len(self.input_sequences[i:i+self.config.PREDICTION_BATCH_SIZE])
 
             batch_input_sequences = self.batch_get_input(i, batch_size)
             predicted_class = self.predict_sequences(batch_input_sequences)
