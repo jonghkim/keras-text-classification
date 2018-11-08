@@ -13,6 +13,8 @@ class ConvConfig():
 
     PREDICTION_BATCH_SIZE = 5
 
+    DROPOUT = 0.2
+
     def set_params(self, params):
         for key, item in params.items():
             if key == 'MODE':

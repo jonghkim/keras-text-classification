@@ -4,7 +4,9 @@ import pandas as pd
 
 import keras
 from keras.models import Model
-from keras.layers import Input, LSTM, GRU, Dense, Embedding, Bidirectional, Conv1D, MaxPooling1D, Merge, Dropout, Flatten, 
+from keras.layers import (Input, LSTM, GRU, Dense, Embedding, Bidirectional,
+                            Conv1D, MaxPooling1D, Merge, Dropout, Flatten,
+                            Concatenate, BatchNormalization)
 from keras.utils import to_categorical
 from keras.models import load_model
 from keras.callbacks import EarlyStopping
@@ -55,7 +57,7 @@ class ConvModel():
     def batch_get_output(self, idx, batch_size):
         # create targets, since we cannot use sparse
         # categorical cross entropy when we have sequences
-        batch_classes_targets_one_hot = np.zeros((
+        classes_targets_one_hot = np.zeros((
                                                     batch_size,
                                                     self.config.CLASS_NUM
                                                 ),
@@ -63,11 +65,11 @@ class ConvModel():
                                             )
         # assign the values
         for i, d in enumerate(self.classes[idx:idx+batch_size]):
-            batch_classes_targets_one_hot[i, d] = 1
+            classes_targets_one_hot[i, d] = 1
 
-        batch_y = batch_classes_targets_one_hot
+        y = classes_targets_one_hot
 
-        return batch_y
+        return y
 
     def batch_generator(self):
         idx = 0
@@ -88,19 +90,56 @@ class ConvModel():
         print('---- Set Embedding Matrix Finished ----')
 
     def build_model(self):
-        pass
-        
-        model.compile(loss='binary_crossentropy',
+        # create embedding layer
+        embedding_layer = Embedding(self.embedding_matrix.shape[0],
+                                    self.config.EMBEDDING_DIM,
+                                    weights=[self.embedding_matrix],
+                                    input_length=self.max_len_input,
+                                    name='encoder_embedding'
+                                    # trainable=True
+                                    )
+        ##### build the model #####
+        inputs_placeholder = Input(shape=(self.max_len_input,),name='input')
+        x = embedding_layer(inputs_placeholder)
+
+        convs = []
+        filter_sizes = [3,4,5]
+        for filter_size in filter_sizes:
+            conv_layer = Conv1D(filters=128, kernel_size=filter_size, activation='relu')(x)
+            bn_layer = BatchNormalization(conv_layer)
+            pooling_layer = MaxPooling1D(pool_size=3)(bn_layer)
+            convs.append(pooling_layer)
+
+        z = Concatenate()(convs) if len(convs) > 1 else convs[0]
+        z = Flatten()(z)
+        dropout = Dropout(self.config.DROPOUT)(z)
+        output = Dense(units=self.config.CLASS_NUM, activation='softmax')(dropout)
+
+        model = Model(inputs=inputs_placeholder, outputs=output)
+
+        model.compile(loss='categorical_crossentropy',
                     optimizer='adam',
                     metrics=['acc'])
+
         model.summary()
-        return model
+        print('---- Build Model Finished ----')
+
+        self.model = model
 
     def train_model(self):
+        r = self.model.fit_generator(generator=self.batch_generator(),
+                    epochs=self.config.EPOCHS,
+                    steps_per_epoch=self.steps_per_epoch,
+                    validation_split=0.2,
+                    verbose=1,                    
+                    use_multiprocessing=False,
+                    workers=1,
+                    callbacks=callbacks_list)
+        print('---- Train Model Finished ----')        
         pass
 
     def save_model(self):
-        pass
+        self.model.save(SAVE_PATH)
 
     def predict_build_model(self):
         pass
