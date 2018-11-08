@@ -18,7 +18,7 @@ The purpose of this project is to explore different text classification models b
 ## Usage
 ~~~
 # Convolutional Neural Networks for Sentence Classification: Solve Sentiment Classification Problem
-# Slightly different from Yoon Kim model, batch normalization and multi class classification is supported
+# Slightly different from Yoon Kim model, batch normalization and multi class classification are supported
 python -m bin.conv_model_train
 python -m bin.conv_model_eval
 ~~~
