@@ -45,6 +45,8 @@ class ConvModel():
         self.idx2word_eng = {v:k for k, v in self.word2idx_inputs.items()}
         
         self.classes = classes
+        
+        self.steps_per_epoch = int(len(self.input_sequences)/self.config.BATCH_SIZE)
 
         print('---- Set Data Finished ----')
 
@@ -106,8 +108,8 @@ class ConvModel():
         filter_sizes = [3,4,5]
         for filter_size in filter_sizes:
             conv_layer = Conv1D(filters=128, kernel_size=filter_size, activation='relu')(embedded_sequence)
-            #bn_layer = BatchNormalization()(conv_layer)
-            pooling_layer = MaxPooling1D(pool_size=3)(conv_layer)
+            bn_layer = BatchNormalization()(conv_layer)
+            pooling_layer = MaxPooling1D(pool_size=3)(bn_layer)
             convs.append(pooling_layer)
         merge = Merge(mode='concat', concat_axis=1)(convs)
         z = Flatten()(merge)
