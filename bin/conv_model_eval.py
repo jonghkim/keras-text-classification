@@ -1,5 +1,6 @@
 import os, sys
 import numpy as np
+import pandas as pd
 
 from utils.data_helper import DataHelper
 from models.config import ConvConfig
@@ -14,6 +15,7 @@ if __name__ == "__main__":
     POS_DATA_PATH = 'data/sentiment/pos.txt'
     WORD2VEC_PATH = '/data/pretrained_model/word_embedding/glove.6B/glove.6B.%sd.txt' % config.EMBEDDING_DIM
     LOAD_PATH = 'models/models/model_w{}_e{}_c{}.h5'.format(config.EMBEDDING_DIM, config.LATENT_DIM, config.CLASS_NUM)
+    SAVE_RESULT_PATH = 'results/model_w{}_e{}_c{}.csv'.format(config.EMBEDDING_DIM, config.LATENT_DIM, config.CLASS_NUM)
 
     print(config)
     print("Data Path: ", NEG_DATA_PATH, POS_DATA_PATH)
@@ -40,4 +42,11 @@ if __name__ == "__main__":
 
     ans = input("Save Predictions? [Y/n]")
     if ans and ans.lower().startswith('n'):
-        sys.exit("**** Evaluation Done ****")
+        print("**** Evaluation Done ****")
+    else:
+        predicted_classes = model.predict(input_texts, classes)
+        predicted_list = [list(line) for line in zip(input_texts, classes, predicted_classes)]
+        class_colnames = ["class"+str(i) for i in range(len(predicted_classes[0]))]
+        predicted_df = pd.DataFrame(predicted_list, columns = ["sentence", "actual class"]+ class_colnames)
+        predicted_df.to_csv(SAVE_RESULT_PATH, encoding='utf-8')
+

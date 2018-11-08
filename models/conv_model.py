@@ -179,3 +179,23 @@ class ConvModel():
             ans = input("Continue? [Y/n]")
             if ans and ans.lower().startswith('n'):
                 break
+
+    def predict(self, input_texts, classes):
+        
+        predicted_classes = []
+        
+        step = 0
+
+        for i in range(0, len(input_texts), self.config.PREDICTION_BATCH_SIZE):
+            if step < (i/len(input_texts)):
+                print("Progrees: ", i," / ", len(input_texts))
+                step = step+0.05
+
+            batch_size = len(self.encoder_inputs[i:i+self.config.PREDICTION_BATCH_SIZE])
+
+            batch_input_sequences = self.batch_get_input(i, batch_size)
+            predicted_class = self.predict_sequences(batch_input_sequences)
+           
+            predicted_classes.extend(predicted_class) 
+
+        return predicted_classes        
