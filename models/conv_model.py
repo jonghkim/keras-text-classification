@@ -173,10 +173,8 @@ class ConvModel():
             for j in range(batch_size):
                 print('-')
                 print('*** Input:', input_texts[i+j], ' ***')
-
-                if self.config.STYLE_TRANSFER == False:
-                    print('   Predicted Class:', ' '.join(predicted_classes[j]))
-                    print('Actual Class:', classes[i+j])
+                print('   Predicted Class:', ' '.join(predicted_classes[j]))
+                print('Actual Class:', classes[i+j])
 
             ans = input("Continue? [Y/n]")
             if ans and ans.lower().startswith('n'):
