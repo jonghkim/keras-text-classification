@@ -6,7 +6,8 @@ The purpose of this project is to explore different text classification models b
 
 ## Data
 - For cnn text classification model: Sentiment Review Dataset
-    - get the data at: http://jmcauley.ucsd.edu/data/amazon/links.html
+  - toy data is added on "data/sentiment/"
+  - if you need the raw data visit: http://jmcauley.ucsd.edu/data/amazon/links.html
 
 ## Models
 - Convolutional Neural Networks for Sentence Classification (Done)
@@ -16,11 +17,13 @@ The purpose of this project is to explore different text classification models b
 
 ## Usage
 ~~~
-# For Convolutional Neural Networks for Sentence Classification: Solve Sentiment Classification Problem
+# Convolutional Neural Networks for Sentence Classification: Solve Sentiment Classification Problem
 # Slightly different from Yoon Kim model, batch normalization and multi class classification is supported
 python -m bin.conv_model_train
 python -m bin.conv_model_eval
 ~~~
+
+![cnn_text_classification](img/cnn_text_classification.png)
 
 ## Paper References
 - [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) (EMNLP 2014)
