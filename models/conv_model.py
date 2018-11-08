@@ -95,25 +95,26 @@ class ConvModel():
                                     self.config.EMBEDDING_DIM,
                                     weights=[self.embedding_matrix],
                                     input_length=self.max_len_input,
-                                    name='encoder_embedding'
+                                    name='input_embedding'
                                     # trainable=True
                                     )
         ##### build the model #####
         inputs_placeholder = Input(shape=(self.max_len_input,),name='input')
-        x = embedding_layer(inputs_placeholder)
+        embedded_sequence = embedding_layer(inputs_placeholder)
 
         convs = []
         filter_sizes = [3,4,5]
         for filter_size in filter_sizes:
-            conv_layer = Conv1D(filters=128, kernel_size=filter_size, activation='relu')(x)
-            bn_layer = BatchNormalization()(conv_layer)
-            pooling_layer = MaxPooling1D(pool_size=3)(bn_layer)
+            conv_layer = Conv1D(filters=128, kernel_size=filter_size, activation='relu')(embedded_sequence)
+            #bn_layer = BatchNormalization()(conv_layer)
+            pooling_layer = MaxPooling1D(pool_size=3)(conv_layer)
             convs.append(pooling_layer)
-
-        z = Concatenate()(convs) if len(convs) > 1 else convs[0]
-        z = Flatten()(z)
+        merge = Merge(mode='concat', concat_axis=1)(convs)
+        z = Flatten()(merge)
         dropout = Dropout(self.config.DROPOUT)(z)
-        output = Dense(units=self.config.CLASS_NUM, activation='softmax')(dropout)
+        output = Dense(128, activation='relu')(dropout)
+        output = Dropout(self.config.DROPOUT)(output)
+        output = Dense(self.config.CLASS_NUM, activation='softmax')(dropout)
 
         model = Model(inputs=inputs_placeholder, outputs=output)
 
