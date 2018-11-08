@@ -136,7 +136,6 @@ class ConvModel():
         r = self.model.fit_generator(generator=self.batch_generator(),
                     epochs=self.config.EPOCHS,
                     steps_per_epoch=self.steps_per_epoch,
-                    validation_split=0.2,
                     verbose=1,                    
                     use_multiprocessing=False,
                     workers=1,
