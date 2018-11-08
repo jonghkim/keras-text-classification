@@ -130,9 +130,10 @@ class ConvModel():
         self.model = model
 
     def train_model(self):
-        early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
-        callbacks_list = [early_stopping]
-
+        #early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
+        #callbacks_list = [early_stopping]
+        callbacks_list = []
+        
         r = self.model.fit_generator(generator=self.batch_generator(),
                     epochs=self.config.EPOCHS,
                     steps_per_epoch=self.steps_per_epoch,
