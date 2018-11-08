@@ -10,7 +10,7 @@ if __name__ == "__main__":
     NEG_DATA_PATH = 'data/sentiment/neg.txt' 
     POS_DATA_PATH = 'data/sentiment/pos.txt'
     WORD2VEC_PATH = '/data/pretrained_model/word_embedding/glove.6B/glove.6B.%sd.txt' % config.EMBEDDING_DIM
-    SAVE_PATH = 'models/models/model_w{}_e{}_c{}.h5'.format(config.EMBEDDING_DIM, config.LATENT_DIM, config.CLASS_DIM)
+    SAVE_PATH = 'models/models/model_w{}_e{}_c{}.h5'.format(config.EMBEDDING_DIM, config.LATENT_DIM, config.CLASS_NUM)
 
     print(config)
     print("Data Path: ", NEG_DATA_PATH, POS_DATA_PATH)
