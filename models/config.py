@@ -16,6 +16,8 @@ class ConvConfig():
 
     DROPOUT = 0.2
 
+    INPUT_MAX_LEN = 60
+
     def set_params(self, params):
         for key, item in params.items():
             if key == 'MODE':

@@ -64,7 +64,8 @@ class DataHelper():
         print('Found %s unique input tokens.' % len(word2idx_inputs))
 
         # determine maximum length input sequence
-        max_len_input = max(len(s) for s in input_sequences)
+        # max_len_input = max(len(s) for s in input_sequences)
+        max_len_input = self.config.INPUT_MAX_LEN
 
         # pad the sequences
         input_sequences = pad_sequences(input_sequences, maxlen=max_len_input)
